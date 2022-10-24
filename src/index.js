@@ -34,7 +34,9 @@ app.use(express.urlencoded({ extended: false }));
 // Routes
 
 // app.use(require("./routes"));
-app.use(cors());
+//app.use(cors());
+app.use("/", require("./routes"));
+app.use("/users", require("./routes/user.route"));
 app.use("/users", require("./routes/user.route"));
 app.use("/lawyers", require("./routes/lawyers.route"));
 

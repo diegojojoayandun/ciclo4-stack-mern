@@ -2,103 +2,159 @@ import React from "react";
 import { useState } from "react";
 
 const AddUser = () => {
-  const [name, setName] = useState("");
-  const [lastname, setLastname] = useState("");
-  //   const [name, setname] = useState(second);
-  //   const [name, setname] = useState(second);
-  //   const [name, setname] = useState(second);
 
-  function addUser() {}
+
+  const [form, setForm] = useState({
+    name: "",
+    lastname: "",
+    password: "",
+    phone: "",
+    address: "",
+    email: "",
+
+    state: "",
+    city: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  async function addUser() {
+    const user = {
+      name: form.name,
+      lastname: form.lastname,
+      email: form.email,
+      phone: form.phone,
+      address: form.address,
+      city: form.city,
+      password: form.password,
+      state: form.state,
+    };
+
+    await fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    alert("sucessfully created ");
+  }
 
   return (
-    <div className="container p-4">
+    <div className="container p-3">
       <div className="row">
         <div className="col-md-4 mx-auto">
           <div className="card-header text-center">
-            <h3>Agregar Usuario</h3>
+            <h3>Registrarse</h3>
             <div className="card-body">
-              <form action="../links/add" method="post">
-                <div className="row mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="name"
-                    value={name}
-                    placeholder="Nombres"
-                    autofocus
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
+              <div className="row mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="name"
+                  value={form.name}
+                  placeholder="Nombres"
+                  autoFocus
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="lastname"
+                  value={form.lastname}
+                  placeholder="Apellidos"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={form.password}
+                  placeholder="Contraseña"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <input
+                  type="email"
+                  className="form-control"
+                  name="email"
+                  value={form.email}
+                  placeholder="Correo Electrónico"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="phone"
+                  value={form.phone}
+                  placeholder="Teléfono"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="address"
+                  value={form.address}
+                  placeholder="Dirección"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  name="state"
+                  value={form.state}
+                  placeholder="Estado"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  value={form.city}
+                  name="city"
+                  placeholder="Ciudad"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="row mb-3">
+                <select
+                  className="form-select"
+                  aria-label="Default select example"
+                >
+                  <option defaultValue>Seleccione su Rol</option>
+                  <option name="rol" value="value1">
+                    usuario
+                  </option>
+                  <option name="" value="value2">
+                    abogado
+                  </option>
+                </select>
+              </div>
+              <div className="row mb-3">
+                <div className="d-grid gap-2">
+                  <button onClick={addUser} className="btn btn-success">
+                    Guardar
+                  </button>
                 </div>
-                <div className="row mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="lastname"
-                    value={lastname}
-                    placeholder="Apellidos"
-                    onChange={(e) => {
-                      setLastname(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="row mb-3">
-                  <input
-                    type="password"
-                    className="form-control"
-                    name="password"
-                    placeholder="Contraseña"
-                  />
-                </div>
-                <div className="row mb-3">
-                  <input
-                    type="email"
-                    className="form-control"
-                    name="email"
-                    placeholder="Correo Electrónico"
-                  />
-                </div>
-                <div className="row mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="phone"
-                    placeholder="Teléfono"
-                  />
-                </div>
-                <div className="row mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="address"
-                    placeholder="Dirección"
-                  />
-                </div>
-                <div className="row mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="state"
-                    placeholder="Estado"
-                  />
-                </div>
-                <div className="row mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="city"
-                    placeholder="Ciudad"
-                  />
-                </div>
-                <div className="row mb-3">
-                  <div className="d-grid gap-2">
-                    <button onClick={addUser} className="btn btn-success">
-                      Guardar
-                    </button>
-                  </div>
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

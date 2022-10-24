@@ -4,8 +4,15 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
+        <img
+          src="https://psasattorneys.com/files/2020/03/hand_shake.png"
+          height="30"
+          alt=""
+          loading="lazy"
+        />
+
         <a className="navbar-brand" href="/">
-          MiAbogadoYa.com
+           MiAbogadoYA.com
         </a>
         <button
           className="navbar-toggler"
@@ -25,18 +32,33 @@ const Navbar = () => {
                 Inicio
               </a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/adduser">
-                Agregar Usuario
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Usuario
               </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Actualizar Link
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link">Eliminar Link</a>
+              <ul className="dropdown-menu dropdown-menu-dark dropdown-menu-lg-end">
+                <li>
+                  <a className="dropdown-item" href="/listusers">
+                    Listar Usuarios
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="/adduser">
+                    Agregar Usuario
+                  </a>
+                </li>
+                <li>
+                  <a className="dropdown-item" href="#">
+                    Editar Usuario
+                  </a>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
