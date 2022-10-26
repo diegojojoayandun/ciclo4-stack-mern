@@ -22,19 +22,20 @@ const LoginForm = () => {
             className="my-5 display-3 fw-bold ls-tight px-3"
             style={{ color: "hsl(218, 81%, 95%)" }}
           >
-            Los Mejores <br />
+            Tu Abogado <br />
             <span style={{ color: "hsl(218, 81%, 75%)" }}>en un Click</span>
           </h1>
 
-          <p className="px-3" style={{ color: "hsl(218, 81%, 85%)" }}>
+          <p
+            className="px-3 text-justify"
+            style={{ color: "hsl(218, 81%, 85%)" }}
+          >
             Probablemente todos, en algún momento de nuestras vidas, necesitemos
             los servicios de un especialista legal para ayudarnos a resolver
             algún asunto jurídico. Cada vez que necesitamos los servicios de un
             profesional, intentamos buscar a la persona de nuestro entorno
             experta en la materia en cuestión. Pero ¿es especialmente importante
-            elegir un buen abogado?
-
-            La respuesta es simple: sin dudarlo. Un buen
+            elegir un buen abogado? La respuesta es simple: sin dudarlo. Un buen
             abogado puede ayudarnos a evitar múltiples problemas futuros y, sin
             duda, además de agilizar el tiempo para resolver cualquier
             inquietud, evitaría tener sorpresas económicas que puedan derivar de
@@ -51,32 +52,37 @@ const LoginForm = () => {
             <MDBCardBody className="p-5 d-flex flex-column align-items-center mx-auto w-100">
               <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
               <p className="text-white-50 mb-5">
-                Please enter your login and password!
+                Por favor ingrese su usuario y Contraseña!
               </p>
 
               <MDBInput
                 wrapperClass="mb-4 mx-5 w-100"
                 labelClass="text-white"
-                label="Email address"
-                id="formControlLg"
+                label="Dirección de correo electrónico"
                 type="email"
-                size="lg"
+                name="email"
+                placeholder="Ingrese su correo electrónico"
               />
               <MDBInput
                 wrapperClass="mb-4 mx-5 w-100"
                 labelClass="text-white"
-                label="Password"
-                id="formControlLg"
+                label="Contraseña"
                 type="password"
-                size="lg"
+                placeholder="Ingrese su Contraseña"
               />
+
+
 
               <p className="small mb-3 pb-lg-2">
-                <a class="text-white-50" href="#!">
-                  Forgot password?
+                <a className="text-white-50" href="#!">
+                  Olvidó su Contraseña?
                 </a>
               </p>
-              <MDBBtn outline className="mx-2 px-5" color="white" size="lg">
+              <MDBBtn
+                outline
+                className="mx-2 px-5"
+                color="light"
+              >
                 Login
               </MDBBtn>
 
@@ -99,6 +105,7 @@ const LoginForm = () => {
                   <MDBIcon fab icon="twitter" size="lg" />
                 </MDBBtn>
 
+
                 <MDBBtn
                   tag="a"
                   color="none"
@@ -111,9 +118,9 @@ const LoginForm = () => {
 
               <div>
                 <p className="mb-0">
-                  Don't have an account?{" "}
-                  <a href="#!" class="text-white-50 fw-bold">
-                    Sign Up
+                  Aún no tiene una cuenta?{" "}
+                  <a href="/adduser" className="text-white-50 fw-bold">
+                    Registrese
                   </a>
                 </p>
               </div>

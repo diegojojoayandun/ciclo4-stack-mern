@@ -1,21 +1,30 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
 const UserSchema = require("../models/user");
 
 // Get a list of all users
 router.get("/", async (req, res) => {
-  const users = await UserSchema.find();
+  try {
+    const users = await UserSchema.find();
 
-  res.json(users);
+    res.json(users);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 });
 
 // Create a new user
 router.post("/", async (req, res) => {
   const users = new UserSchema(req.body);
-  await users.save();
 
-  res.json(users);
+  try {
+    await users.save();
+
+    res.json(users);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
 });
 
 // Get user By ID

@@ -7,4 +7,9 @@ mongoose
   .then(() => console.log("MongoDB successfully connected"))
   .catch((err) => console.log(err));
 
+  printAlert  = ()=>{
+    alert("asasas");
+  };
+
 module.exports = mongoose;
+

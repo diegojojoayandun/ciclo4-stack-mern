@@ -2,39 +2,36 @@ import React from "react";
 import { useState } from "react";
 
 const AddUser = () => {
-
-
   const [form, setForm] = useState({
-    name: "",
-    lastname: "",
+    fullname: "",
+    email: "",
     password: "",
     phone: "",
     address: "",
-    email: "",
-
     state: "",
     city: "",
+    rol: "",
   });
 
   const handleChange = (e) => {
+    console.log(e.target.value);
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
+  const user = {
+    fullname: form.fullname,
+    email: form.email,
+    password: form.password,
+    phone: form.phone,
+    address: form.address,
+    city: form.city,
+    state: form.state,
+    rol: form.rol,
+  };
   async function addUser() {
-    const user = {
-      name: form.name,
-      lastname: form.lastname,
-      email: form.email,
-      phone: form.phone,
-      address: form.address,
-      city: form.city,
-      password: form.password,
-      state: form.state,
-    };
-
     await fetch("http://localhost:5000/users", {
       method: "POST",
       headers: {
@@ -57,30 +54,10 @@ const AddUser = () => {
                 <input
                   type="text"
                   className="form-control"
-                  name="name"
-                  value={form.name}
+                  name="fullname"
+                  value={form.fullname}
                   placeholder="Nombres"
                   autoFocus
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="row mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  name="lastname"
-                  value={form.lastname}
-                  placeholder="Apellidos"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="row mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={form.password}
-                  placeholder="Contraseña"
                   onChange={handleChange}
                 />
               </div>
@@ -94,6 +71,17 @@ const AddUser = () => {
                   onChange={handleChange}
                 />
               </div>
+              <div className="row mb-3">
+                <input
+                  type="password"
+                  className="form-control"
+                  name="password"
+                  value={form.password}
+                  placeholder="Contraseña"
+                  onChange={handleChange}
+                />
+              </div>
+
               <div className="row mb-3">
                 <input
                   type="text"
@@ -138,14 +126,15 @@ const AddUser = () => {
                 <select
                   className="form-select"
                   aria-label="Default select example"
+                  name="rol"
+                  onChange={handleChange}
+                  value={form.rol}
+                  
                 >
                   <option defaultValue>Seleccione su Rol</option>
-                  <option name="rol" value="value1">
-                    usuario
-                  </option>
-                  <option name="" value="value2">
-                    abogado
-                  </option>
+                  <option name="opt">usuario</option>
+
+                  <option name="opt">abogado</option>
                 </select>
               </div>
               <div className="row mb-3">
