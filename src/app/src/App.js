@@ -6,7 +6,7 @@ import Footer from "./components/helpers/Footer";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Signup from "./components/Signup";
-import ListAll from "./components/ListAll";
+import ListUsers from "./components/ListUsers";
 import Test from "./components/Test";
 
 function App() {
@@ -15,10 +15,11 @@ function App() {
       <Navbar />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Welcome />} exact></Route>
-          <Route path="/listusers" element={<ListAll />} exact></Route>
-          <Route path="/lawyer/" element={<Test />} exact />
-          <Route path="/adduser" element={<Signup />} exact />
+          <Route path="/" element={<Welcome />} ></Route>
+          <Route path="/listusers" element={<ListUsers />} ></Route>
+          <Route path="/lawyer/" element={<Test />} />
+          <Route path="/adduser" element={<Signup />} />
+          <Route path="/edit/:id" element={<Signup />} />
         </Routes>
       </BrowserRouter>
       <Footer />

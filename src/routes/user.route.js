@@ -1,4 +1,4 @@
-import express from "express";
+const express = require("express");
 const router = express.Router();
 
 const UserSchema = require("../models/user");
@@ -17,39 +17,35 @@ router.get("/", async (req, res) => {
 // Create a new user
 router.post("/", async (req, res) => {
   const users = new UserSchema(req.body);
-
   try {
     await users.save();
 
     res.json(users);
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "FALTO UN DATO REQUERIDO" });
   }
 });
 
 // Get user By ID
 router.get("/:id", async (req, res) => {
-  const users = await UserSchema.findById(req.params.id);
-  res.json(users);
+  try {
+    const users = await UserSchema.findById(req.params.id);
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // Edit user
-router.put("/edit/:id", (req, res, next) => {
-  UserSchema.findByIdAndUpdate(
-    req.params.id,
-    {
+router.put("/edit/:id", async (req, res, next) => {
+  try {
+    const users = await UserSchema.findByIdAndUpdate(req.params.id, {
       $set: req.body,
-    },
-    (error, data) => {
-      if (error) {
-        console.log(error);
-        return next(error);
-      } else {
-        res.json(data);
-        console.log("Student updated successfully !");
-      }
-    }
-  );
+    });
+    res.json(users);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // Delete user

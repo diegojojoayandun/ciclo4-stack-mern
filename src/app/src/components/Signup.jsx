@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+// import { usveNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+
 import {
   MDBContainer,
   MDBInput,
   MDBRow,
-  MDBBtn,
   MDBCol,
   MDBCard,
   MDBCardBody,
 } from "mdb-react-ui-kit";
+
+//import Swal from "sweetalert2";
+import { successAlert } from "./helpers/alerts";
 
 const Signup = () => {
   const [form, setForm] = useState({
@@ -21,15 +26,24 @@ const Signup = () => {
     rol: "",
   });
 
+  const params = useParams();
+
+  //   const navigate = useNavigate();
+
   const handleChange = (e) => {
-    console.log(e.target.value);
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
   };
 
- 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //e.target.reset();
+
+    successAlert();
+    // navigate("/");
+  };
 
   const user = {
     fullname: form.fullname,
@@ -41,6 +55,8 @@ const Signup = () => {
     state: form.state,
     rol: form.rol,
   };
+
+  // Agrega un usuario a la base de dato metodo POST
   async function addUser() {
     await fetch("http://localhost:5000/users", {
       method: "POST",
@@ -50,133 +66,188 @@ const Signup = () => {
       },
       body: JSON.stringify(user),
     });
-    alert("sucessfully created ");
   }
+
+  async function editUser(id) {
+    await fetch("http://localhost:5000/users/edit/" + params.id, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+  }
+
+  // GET user By ID
+  const getUser = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/users/" + params.id);
+      const users = await res.json();
+      setForm(users);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const loadUsers = async (users) => {
+      if (params.id) {
+        await getUser(params.id);
+      }
+    };
+    loadUsers();
+  }, []);
+
   return (
-    <MDBContainer fluid>
-      <MDBRow className="d-flex justify-content-center align-items-center h-100">
-        <MDBCol col="12">
-          <MDBCard
-            className="bg-dark text-white my-4 mx-auto"
-            style={{ borderRadius: "1rem", maxWidth: "400px" }}
-          >
-            <MDBCardBody className="p-2 d-flex flex-column align-items-center mx-auto w-100">
-              <h2 className="fw-bold mb-2 text-uppercase">Registro</h2>
-              <p className="text-white-50 mb-2">
-                Por favor registre sus datos personales!
-              </p>
-
-              <MDBInput
-                wrapperClass="mb-4 mx-5 w-100"
-                labelClass="text-white"
-                name="fullname"
-                id="formControlLg"
-                type="text"
-                placeholder="Nombre Completo"
-                onChange={handleChange}
-              />
-
-              <MDBInput
-                wrapperClass="mb-4 mx-5 w-100"
-                labelClass="text-white"
-                name="email"
-                id="formControlLg"
-                type="email"
-                placeholder="Correo Eléctonico"
-                onChange={handleChange}
-              />
-              <MDBInput
-                wrapperClass="mb-4 mx-5 w-100"
-                labelClass="text-white"
-                name="password"
-                id="formControlLg"
-                type="password"
-                placeholder="Contraseña"
-                onChange={handleChange}
-              />
-
-              <MDBInput
-                wrapperClass="mb-4 mx-5 w-100"
-                labelClass="text-white"
-                name="phone"
-                id="formControlLg"
-                type="text"
-                placeholder="Teléfono"
-                onChange={handleChange}
-              />
-
-              <MDBInput
-                wrapperClass="mb-4 mx-5 w-100"
-                labelClass="text-white"
-                name="address"
-                id="formControlLg"
-                type="text"
-                placeholder="Dirección"
-                onChange={handleChange}
-              />
-              <MDBRow>
-                <MDBCol col="6">
-                  <MDBInput
-                    wrapperClass="mb-4"
-                    labelClass="text-white"
-                    name="state"
-                    id="formControlLg"
-                    type="text"
-                    placeholder="Departamento"
-                    onChange={handleChange}
-                  />
-                </MDBCol>
-
-                <MDBCol col="6">
-                  <MDBInput
-                    wrapperClass="mb-4"
-                    labelClass="text-white"
-                    name="city"
-                    id="formControlLg"
-                    type="text"
-                    placeholder="Ciudad"
-                    onChange={handleChange}
-                  />
-                </MDBCol>
-              </MDBRow>
-
-              <div className="row mb-3">
-                <select
-                  className="form-select"
-                  aria-label="Default select example"
-                  name="rol"
-                  onChange={handleChange}
-                  value={form.rol}
-                >
-                  <option defaultValue>Seleccione su Rol</option>
-                  <option name="opt">Usuario</option>
-
-                  <option name="opt">Abogado</option>
-                </select>
-              </div>
-
-              <MDBBtn
-                outline
-                className="mx-2 px-5"
-                color="light"
-                onClick={addUser}
-                id="liveAlertBtn"
-              >
-                Registro
-              </MDBBtn>
-              <div>
-                <p className="mb-0 p-4">
-                  Ya tienes Cuenta?{" "}
-                  <a href="/" className="text-white-50 fw-bold">
-                    Ingresa Aquí
-                  </a>
+    <form onSubmit={handleSubmit}>
+      <MDBContainer fluid>
+        <MDBRow className="d-flex justify-content-center align-items-center h-100">
+          <MDBCol col="12">
+            <MDBCard
+              className="bg-dark text-white my-4 mx-auto"
+              style={{ borderRadius: "1rem", maxWidth: "400px" }}
+            >
+              <MDBCardBody className="p-2 d-flex flex-column align-items-center mx-auto w-100">
+                <h2 className="fw-bold mb-2 text-uppercase">
+                  {!params.id ? "Registro USuario" : "Edición de Usuario"}
+                </h2>
+                <p className="text-white-50 mb-2">
+                  Por favor registre sus datos personales!
                 </p>
-              </div>
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+
+                <MDBInput
+                  wrapperClass="mb-4 mx-5 w-100"
+                  labelClass="text-white"
+                  name="fullname"
+                  id="fullname"
+                  type="text"
+                  value={form.fullname}
+                  placeholder="Nombre Completo"
+                  onChange={handleChange}
+                  required
+                />
+
+                <MDBInput
+                  wrapperClass="mb-4 mx-5 w-100"
+                  labelClass="text-white"
+                  name="email"
+                  value={form.email}
+                  id="email"
+                  type="email"
+                  placeholder="Correo Eléctonico"
+                  onChange={handleChange}
+                  required
+                />
+                <MDBInput
+                  wrapperClass="mb-4 mx-5 w-100"
+                  labelClass="text-white"
+                  name="password"
+                  value={form.password}
+                  id="password"
+                  type="password"
+                  placeholder="Contraseña"
+                  onChange={handleChange}
+                  required
+                  invalid={MDBInput.invalid}
+                  validation="Please provide your email"
+                />
+
+                <MDBInput
+                  wrapperClass="mb-4 mx-5 w-100"
+                  labelClass="text-white"
+                  name="phone"
+                  value={form.phone}
+                  id="phone"
+                  type="text"
+                  placeholder="Teléfono"
+                  onChange={handleChange}
+                  required
+                />
+
+                <MDBInput
+                  wrapperClass="mb-4 mx-5 w-100"
+                  labelClass="text-white"
+                  name="address"
+                  value={form.address}
+                  id="address"
+                  type="text"
+                  placeholder="Dirección"
+                  onChange={handleChange}
+                  required
+                />
+                <MDBRow>
+                  <MDBCol col="6">
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      labelClass="text-white"
+                      name="state"
+                      value={form.state}
+                      id="state"
+                      type="text"
+                      placeholder="Departamento"
+                      onChange={handleChange}
+                      required
+                    />
+                  </MDBCol>
+
+                  <MDBCol col="6">
+                    <MDBInput
+                      wrapperClass="mb-4"
+                      labelClass="text-white"
+                      name="city"
+                      value={form.city}
+                      id="city"
+                      type="text"
+                      placeholder="Ciudad"
+                      onChange={handleChange}
+                      required
+                    />
+                  </MDBCol>
+                </MDBRow>
+
+                <div className="row mb-3">
+                  <select
+                    className="form-select"
+                    aria-label="Default select example"
+                    name="rol"
+                    onChange={handleChange}
+                    value={form.rol}
+                  >
+                    <option defaultValue>Tipo de Usuario</option>
+                    <option name="opt">Usuario</option>
+
+                    <option name="opt">Abogado</option>
+                  </select>
+                </div>
+
+                <button
+                  className="btn btn-outline-light"
+                  data-mdb-ripple-color="light"
+                  type="submit"
+                  onClick={!params.id ? addUser : editUser}
+                >
+                  {!params.id ? "Registrarse" : "Guardar"}
+                </button>
+
+                <div>
+                  {!params.id ? (
+                    <p className="mb-0 p-4">
+                      Ya tienes Cuenta?{" "}
+                      <a href="/" className="text-white-50 fw-bold">
+                        Ingresa Aquí
+                      </a>
+                    </p>
+                  ) : (
+                    <p></p>
+                  )}
+                </div>
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </form>
   );
 };
 

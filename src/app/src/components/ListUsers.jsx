@@ -1,35 +1,34 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { successAlert } from "./helpers/alerts";
 
-const ListAll = () => {
+const ListUsers = () => {
   const [user, setUser] = useState([]);
+  const navigate = useNavigate();
 
+  // GET all users list
   const getUsers = async () => {
     const res = await fetch("http://localhost:5000/users");
     const users = await res.json();
-    //console.log(users);
     return users;
   };
 
+  // DELETE an user from DB
   const deleteUsers = async (id, e) => {
-    console.log(id);
     await fetch("http://localhost:5000/users/delete/" + id, {
       method: "DELETE",
     });
-    //const users = await res.json();
-    setUser(user.filter((item, i) => {i !== id}));
-
-    //return users;
+    successAlert();
+    setUser(user.filter((item, i) => item._id !== id));
   };
 
   useEffect(() => {
     getUsers().then((item) => {
-      //console.log(newItem);
       setUser(item);
     });
   }, []);
 
-
-  return !user ? null :(
+  return !user ? null : (
     <div className="table-wrapper">
       <table className="table table-responsive table-dark table-striped table-sm caption-top table-bordered table-hover">
         <caption className="text-center fs-4 fw-semibold bg-light text-dark">
@@ -47,22 +46,27 @@ const ListAll = () => {
         </thead>
         <tbody>
           {user.map((item) => (
-            <tr key={item._id}>
+            <tr key={item._id} className="text-center fw-light">
               <td>{item._id}</td>
               <td>{item.fullname}</td>
               <td>{item.email}</td>
               <td>{item.phone}</td>
               <td>{item.rol}</td>
-              <td className="align">
-                <button
-                  className="btn  btn-danger pull-right btn-xs btn-space"
-                  onClick={(e) => deleteUsers(item._id, e)}
-                >
-                  Delete
-                </button>
-                <button className="btn btn-success pull-left btn-xs btn-space">
-                      Editar
-                    </button>
+              <td>
+                <div className="d-flex justify-content-center">
+                  <button
+                    className="btn  btn-danger pull-right btn-xs btn-space"
+                    onClick={(e) => deleteUsers(item._id, e)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="btn btn-success pull-left btn-xs btn-space"
+                    onClick={(e) => navigate(`/edit/${item._id}`)}
+                  >
+                    Editar
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
@@ -72,4 +76,4 @@ const ListAll = () => {
   );
 };
 
-export default ListAll;
+export default ListUsers;

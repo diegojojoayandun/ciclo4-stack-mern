@@ -48,16 +48,6 @@ const Navbar = () => {
                     Listar Usuarios
                   </a>
                 </li>
-                <li>
-                  <a className="dropdown-item" href="/adduser">
-                    Agregar Usuario
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Editar Usuario
-                  </a>
-                </li>
               </ul>
             </li>
           </ul>
