@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-// import { usveNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import {
   MDBContainer,
@@ -27,8 +27,7 @@ const Signup = () => {
   });
 
   const params = useParams();
-
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({
@@ -66,9 +65,10 @@ const Signup = () => {
       },
       body: JSON.stringify(user),
     });
+    navigate("/");
   }
 
-  async function editUser(id) {
+  async function editUser() {
     await fetch("http://localhost:5000/users/edit/" + params.id, {
       method: "PUT",
       headers: {
@@ -77,27 +77,34 @@ const Signup = () => {
       },
       body: JSON.stringify(user),
     });
+    navigate("/listusers");
   }
 
   // GET user By ID
-  const getUser = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/users/" + params.id);
-      const users = await res.json();
-      setForm(users);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //   const getUser = async () => {
+  //     try {
+  //       const res = await fetch("http://localhost:5000/users/" + params.id);
+  //       const users = await res.json();
+  //       setForm(users);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
   useEffect(() => {
     const loadUsers = async (users) => {
       if (params.id) {
-        await getUser(params.id);
+        try {
+          const res = await fetch("http://localhost:5000/users/" + params.id);
+          const users = await res.json();
+          setForm(users);
+        } catch (error) {
+          console.error(error);
+        }
       }
     };
     loadUsers();
-  }, []);
+  }, [params.id]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -108,12 +115,14 @@ const Signup = () => {
               className="bg-dark text-white my-4 mx-auto"
               style={{ borderRadius: "1rem", maxWidth: "400px" }}
             >
-              <MDBCardBody className="p-2 d-flex flex-column align-items-center mx-auto w-100">
+              <MDBCardBody className="p-3 d-flex flex-column align-items-center mx-auto w-100">
                 <h2 className="fw-bold mb-2 text-uppercase">
-                  {!params.id ? "Registro USuario" : "Edición de Usuario"}
+                  {!params.id ? "Registro" : "Edición"}
                 </h2>
-                <p className="text-white-50 mb-2">
-                  Por favor registre sus datos personales!
+                <p className="text-white-50 mb-3">
+                  {!params.id
+                    ? "Por favor registre sus datos personales!"
+                    : "Por favor modifique datos a cambiar!"}
                 </p>
 
                 <MDBInput
@@ -206,7 +215,7 @@ const Signup = () => {
                   </MDBCol>
                 </MDBRow>
 
-                <div className="row mb-3">
+                <div className="row mb-4 mx-5 w-100">
                   <select
                     className="form-select"
                     aria-label="Default select example"
@@ -234,9 +243,9 @@ const Signup = () => {
                   {!params.id ? (
                     <p className="mb-0 p-4">
                       Ya tienes Cuenta?{" "}
-                      <a href="/" className="text-white-50 fw-bold">
+                      <Link to="/" className="text-white-50 fw-bold">
                         Ingresa Aquí
-                      </a>
+                      </Link>
                     </p>
                   ) : (
                     <p></p>

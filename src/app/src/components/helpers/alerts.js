@@ -1,7 +1,5 @@
 import Swal from "sweetalert2";
 
-module.exports = {
-  successAlert: function () {
+export const successAlert = function () {
     Swal.fire("Registro", "Guardado Exitosamente!", "success");
-  },
-};
+  }

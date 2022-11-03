@@ -14,18 +14,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Create a new user
-router.post("/", async (req, res) => {
-  const users = new UserSchema(req.body);
-  try {
-    await users.save();
-
-    res.json(users);
-  } catch (error) {
-    return res.status(500).json({ message: "FALTO UN DATO REQUERIDO" });
-  }
-});
-
 // Get user By ID
 router.get("/:id", async (req, res) => {
   try {
@@ -36,7 +24,18 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Edit user
+// Create a new user
+router.post("/", async (req, res) => {
+  const users = new UserSchema(req.body);
+  try {
+    await users.save();
+    res.json(users);
+  } catch (error) {
+    return res.status(500).json({ message: "FALTO UN DATO REQUERIDO" });
+  }
+});
+
+// Edit user By ID
 router.put("/edit/:id", async (req, res, next) => {
   try {
     const users = await UserSchema.findByIdAndUpdate(req.params.id, {
