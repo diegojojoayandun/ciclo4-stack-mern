@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { successAlert } from "./helpers/alerts";
+import { dialogSuccess } from "./helpers/alerts";
 
 const ListUsers = () => {
   const [user, setUser] = useState([]);
@@ -18,7 +18,7 @@ const ListUsers = () => {
     await fetch("http://localhost:5000/users/delete/" + id, {
       method: "DELETE",
     });
-    successAlert();
+    dialogSuccess("Eliminado Correctamente");
     setUser(user.filter((item, i) => item._id !== id));
   };
 

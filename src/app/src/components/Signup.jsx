@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams, Link } from "react-router-dom";
+import { State, City } from "country-state-city";
 
 import {
   MDBContainer,
@@ -12,9 +13,29 @@ import {
 } from "mdb-react-ui-kit";
 
 //import Swal from "sweetalert2";
-import { successAlert } from "./helpers/alerts";
+import { dialogSuccess } from "./helpers/alerts";
 
 const Signup = () => {
+  const [stateid, setStateid] = useState("");
+  const [city, setCity] = useState([]);
+
+  const states = State.getStatesOfCountry("CO");
+
+  const handlestate = (event) => {
+    handleChange(event);
+    const getstateid = event.target.value;
+    const idState = states.filter((item) => item.name === getstateid);
+    setStateid(idState[0].isoCode);
+  };
+
+  useEffect(() => {
+    const getcity = async () => {
+      const cities = City.getCitiesOfCountry("CO");
+      const rescity = cities.filter((item) => item.stateCode === stateid);
+      setCity(rescity);
+    };
+    getcity();
+  }, [stateid]);
   const [form, setForm] = useState({
     fullname: "",
     email: "",
@@ -40,7 +61,7 @@ const Signup = () => {
     e.preventDefault();
     //e.target.reset();
 
-    successAlert();
+    dialogSuccess("Agregado Exitosamente!");
     // navigate("/");
   };
 
@@ -65,6 +86,7 @@ const Signup = () => {
       },
       body: JSON.stringify(user),
     });
+    console.log(JSON.stringify(user));
     navigate("/");
   }
 
@@ -185,33 +207,38 @@ const Signup = () => {
                   onChange={handleChange}
                   required
                 />
+
                 <MDBRow>
                   <MDBCol col="6">
-                    <MDBInput
-                      wrapperClass="mb-4"
-                      labelClass="text-white"
+                    <select
                       name="state"
-                      value={form.state}
                       id="state"
-                      type="text"
-                      placeholder="Departamento"
-                      onChange={handleChange}
-                      required
-                    />
+                      className="form-select mb-4"
+                      onChange={(e) => handlestate(e)}
+                      value={form.state}
+                    >
+                      <option defaultValue>--Seleccione Departamento--</option>
+                      {states.map((item) => (
+                        <option key={item.isoCode}>{item.name}</option>
+                      ))}
+                    </select>
                   </MDBCol>
 
                   <MDBCol col="6">
-                    <MDBInput
-                      wrapperClass="mb-4"
-                      labelClass="text-white"
+                    <select
                       name="city"
-                      value={form.city}
                       id="city"
-                      type="text"
-                      placeholder="Ciudad"
+                      className="form-select mb-4"
                       onChange={handleChange}
-                      required
-                    />
+                      value={form.city}
+                    >
+                      <option defaultValue>--Seleccione Ciudad--</option>
+                      {city.map((item) => (
+                        <option key={item.name + item.stateCode}>
+                          {item.name}
+                        </option>
+                      ))}
+                    </select>
                   </MDBCol>
                 </MDBRow>
 

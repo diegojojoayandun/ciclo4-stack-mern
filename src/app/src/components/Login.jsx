@@ -11,7 +11,7 @@ import {
   MDBCardBody,
 } from "mdb-react-ui-kit";
 
-const LoginForm = () => {
+const Login = () => {
   return (
     <MDBContainer fluid>
       <MDBRow className="d-flex justify-content-center align-items-center h-100">
@@ -28,7 +28,7 @@ const LoginForm = () => {
           </h1>
 
           <p
-            className="px-3 text-justify"
+            className="px-3 text-justify d-none d-sm-block"
             aria-expanded="true"
             style={{ color: "hsl(218, 81%, 85%)" }}
           >
@@ -127,4 +127,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Login;
